@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require_once("../../include/database/DatabaseConnection.php");
 
@@ -10,6 +9,7 @@ class SalaryController extends DatabaseConnection
 
     public function InsertToDatabase($data)
     {
+
         $columns        = implode(", ", array_keys($data));
         $escaped_values = array_map(array($this->conn, 'real_escape_string'), array_values($data));
         $values         = implode("', '", $escaped_values);
@@ -32,36 +32,61 @@ class SalaryController extends DatabaseConnection
                 }
     }
 
-    public function EmployeeReadFromDatabase()
+    public function SalaryReadFromDatabase($data)
     {
-//        $sql    = "SELECT * FROM $this->table_employinfo";
-//        $result = $this->conn->query($sql);
-//        $rows   = $result->fetch_all(MYSQLI_ASSOC);
-//        return $rows; // returning the formatted result
+        $id = $data['emid'];
+        $month = $data['month'];
+        $year = $data['year'];
+        $salary = $data['amount'];
+        $sql    = "SELECT ems_salary.*,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid WHERE emid=$id";
+        $result = $this->conn->query($sql);
+        $rows   = $result->fetch_all(MYSQLI_ASSOC);
+        foreach ($rows as $row) {
+            if ($row['month'] == $month && $row['year'] == $year) {
+                header('Location: ' . $this->base_url . 'index?page=salary-add');
+                $_SESSION['error_message']['dataExist'] = "Already exist";
+                exit();
+            }
+            if ($salary < $row['basicSalary']){
+                header('Location: ' . $this->base_url . 'index?page=salary-add');
+                $_SESSION['error_message']['amountErr'] = "Salary Can not be less than"." ". $row['basicSalary'];
+                exit();
+            }
+        }
+          $data['amount'] += (int)$data['bonus'];
+          unset($data['partial']);
+          $this->InsertToDatabase($data);
+
+        }
+
+    public function SalaryReadFromDatabaseFurther($data)
+    {
+        $id     = $data['emid'];
+        $month  = $data['month'];
+        $year   = $data['year'];
+        $salary = $data['amount'];
+        $sql    = "SELECT ems_salary.*,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid WHERE emid=$id";
+        $result = $this->conn->query($sql);
+        $rows   = $result->fetch_all(MYSQLI_ASSOC);
+        foreach ($rows as $row) {
+            if ($row['month'] == $month && $row['year'] == $year) {
+                header('Location: ' . $this->base_url . 'index?page=salary-add');
+                $_SESSION['error_message']['dataExist'] = "Already exist";
+                exit();
+            }
+            $data['due'] = $row['basicSalary'] - $data['amount'];
+        }
+        unset($data['partial']);
+        $this->InsertToDatabase($data);
     }
 
-    public function EmployeeReadFromDatabaseSingle()
+    public function SalaryReadFromDatabaseSingle()
     {
-//        $sql    = "SELECT * FROM $this->table_employinfo where id = 1";
+//
+//        $sql    = "SELECT * FROM $this->table_salaryinfo where emid = $id";
 //        $result = $this->conn->query($sql);
-//        $row   = mysqli_fetch_assoc($result);
-//        return $row;
-    }
+//        $row    = mysqli_fetch_assoc($result);
 
-    public function SalaryReadFromDatabase()
-    {
-//        $sql    = "SELECT * FROM $this->table_salaryinfo";
-//        $result = $this->conn->query($sql);
-//        $rows   = $result->fetch_all(MYSQLI_ASSOC);
-//        return $rows;
-    }
-
-    public function SalaryReadFromDatabaseSingle($id)
-    {
-//        $sql    = "SELECT * FROM $this->table_employinfo where id = $id";
-//        $result = $this->conn->query($sql);
-//        $row   = mysqli_fetch_assoc($result);
-//        return $row;
     }
 
     public function DatabaseUpdate($updateData)
@@ -124,6 +149,7 @@ class SalaryController extends DatabaseConnection
 
     public function ValidateUserInput($data)
     {
+        $_SESSION['error_message'] = [];
         if (isset($data['emid']) && empty($data['emid'])) {
             $_SESSION['error_message']['emErr'] = "Please select an employee";
         } else {
@@ -150,9 +176,14 @@ class SalaryController extends DatabaseConnection
 
         if (count($_SESSION['error_message']) > 0) {
             header('Location: ' . $this->base_url . 'index?page=salary-add');
-        } else {
-            $this->InsertToDatabase($data);
         }
+        if(isset($data['partial']) && $data['partial'] == 'yes'){
+            $this->SalaryReadFromDatabaseFurther($data);
+
+        }else{
+            $this->SalaryReadFromDatabase($data);
+        }
+
     }
 }
 

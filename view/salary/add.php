@@ -1,11 +1,3 @@
-<?php
-require_once("../../controller/e");
-$EmployeeReadFromDatabase = new EmployeeController();
-$rows = $EmployeeReadFromDatabase->EmployeeReadFromDatabase();
-//echo "<pre>"; print_r($rows);
-?>
-
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -13,6 +5,9 @@ $rows = $EmployeeReadFromDatabase->EmployeeReadFromDatabase();
         <div class="container-fluid">
             <?php if (isset($_SESSION['success_msg'])): ?>
                 <span style="color:green"><?php echo $_SESSION['success_msg']; unset($_SESSION['success_msg']); ?><br></span>
+            <?php endif; ?>
+            <?php if (isset($_SESSION['error_message']['dataExist'])): ?>
+                <span style="color:red"><?php echo $_SESSION['error_message']['dataExist']; unset($_SESSION['error_message']['dataExist']); ?><br></span>
             <?php endif; ?>
             <div class="row mb-2">
             </div><!-- /.row -->
@@ -40,22 +35,36 @@ $rows = $EmployeeReadFromDatabase->EmployeeReadFromDatabase();
                                     <label for="emid">Employee</label>
                                     <select id="month" class="form-control" name="emid">
                                         <option value="" selected readonly>Select employee</option>
-                                        <?php foreach ($rows as $row):?>
-                                        <option value="<?php echo $row['id'];?>"><?php echo $row['fname']. " ". $row['lname'];?></option>
-                                        <?php endforeach;?>
-
+                                        <option value="111" >Nadim Bhai</option>
+                                        <option value="222" >Mahdi Bhai</option>
+                                        <option value="333" >Noman Bhai</option>
+                                        <option value="444" >Hadi Bhai</option>
+                                        <option value="555" >Ibrahim Bhai</option>
+                                        <option value="666" >Farhan Bhai</option>
+                                        <option value="777" >Khoyer Bhai</option>
+                                        <option value="888" >Nayan Bhai</option>
+                                        <option value="999" >Tahmid Bhai</option>
                                     </select>
                                 </div>
                                 <?php if (isset($_SESSION['error_message']['emErr'])): ?>
                                     <span style="color:red"><?php echo $_SESSION['error_message']['emErr']; ?><br></span>
                                 <?php endif; ?>
                                 <div class="form-group">
+                                    <label for="partial">Want to pay partial?</label>
+                                    <input type="radio" class="" name="partial" value="yes"> Yes
+                                   <input type="radio" class="" name="partial" value="no"> No
+                                </div>
+                                <div class="form-group">
                                     <label for="amount">Amount</label>
                                     <input type="number" class="form-control" name="amount" value="" placeholder="30000">
                                 </div>
                                 <?php if (isset($_SESSION['error_message']['amountErr'])): ?>
-                                    <span style="color:red"><?php echo $_SESSION['error_message']['amountErr']; ?><br></span>
+                                    <span style="color:red"><?php echo $_SESSION['error_message']['amountErr']; unset($_SESSION['error_message']['amountErr']);?><br></span>
                                 <?php endif; ?>
+                                <div class="form-group">
+                                    <label for="">Bonus <i style="font-size:10px">Optional</i></label>
+                                    <input type="number" class="form-control" name="bonus" value="" placeholder="1000">
+                                </div>
                                 <div class="form-group">
                                     <label for="year">Year</label>
                                     <input type="number" class="form-control" name="year" value="<?php echo date("Y");?>" placeholder="2022">

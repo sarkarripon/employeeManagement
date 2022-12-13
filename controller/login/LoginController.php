@@ -10,7 +10,7 @@ class LoginController extends DatabaseConnection
         $where  = "email='" . $logInData['email'] . "' and '" . $logInData['password'] . "'";
         $sql    = "SELECT id,email,password FROM $this->table_employinfo WHERE $where"; // RAW Query
         $result = $this->conn->query($sql); //passing the query to MYSql Server
-        $row    = mysqli_fetch_assoc($result); // formet ting the returned query
+        $row    = mysqli_fetch_assoc($result); // formatting the returned query
         return $row; // returning the formatted result
     }
 
@@ -21,7 +21,6 @@ class LoginController extends DatabaseConnection
             if ($result) {
                 $authenticate = $this->authenticateLogin($data); // when data stored successfully then it returns true
                 if (!empty($authenticate)) { //when store is true then redirect to index page
-
                     header('Location:' .  $this->base_url.'index?page=dashboard');
 
                 } else {
@@ -58,6 +57,7 @@ class LoginController extends DatabaseConnection
 }
 
 $Salary = new LoginController();
+unset($_SESSION['loginFaild_msg']);
 $Salary->getLoginData($_POST);
 
 
