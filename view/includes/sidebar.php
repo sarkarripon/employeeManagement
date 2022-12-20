@@ -13,9 +13,11 @@
             <div class="image">
                 <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
+            <?php  if(isset($_SESSION['fname'])):?>
             <div class="info">
-                <a href="#" class="d-block">{{user_name}}</a>
+                <a href="#" class="d-block"><?php echo $_SESSION['fname'];?></a>
             </div>
+            <?php endif;?>
         </div>
 
         <!-- Sidebar Menu -->

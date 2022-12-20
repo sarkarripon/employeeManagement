@@ -40,12 +40,18 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="index.php?page=dashboard" class="nav-link">Home</a>
-            </li>
+            <?php if (!isset($_SESSION['fname'])) : ?>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="index.php?page=login" class="nav-link">Login</a>
             </li>
+            <?php endif; ?>
+            <?php if (isset($_SESSION['fname'])) : ?>
+                <form class="d-flex" action="controller/login/LoginController.php" method="POST">
+                    <input type="hidden" name="page_source" value="logout_page">
+                    <input type="hidden" name="user" value="<?php echo $_SESSION['fname']; ?>">
+                    <button class="btn btn-outline-danger" type="submit">Logout</button>
+                </form>
+            <?php endif; ?>
         </ul>
     </nav>
     <!-- /.navbar -->

@@ -93,7 +93,7 @@ if(isset($_POST['has_filters'])) {
     }
 }
 //all filter query
-$sqlFilter = "SELECT ems_salary.*,ems_users.fname,ems_users.lname FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid $where $emidQuery $yearQuery $monthQuery $dueQuery $bonusQuery";
+$sqlFilter = "SELECT ems_salary.*,ems_users.fname,ems_users.lname,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid $where $emidQuery $yearQuery $monthQuery $dueQuery $bonusQuery";
 echo "<p style='text-align:center'>".$sqlFilter."</p>";
 $resultFilter = $database->conn->query($sqlFilter);
 $rowsFilter   = $resultFilter->fetch_all(MYSQLI_ASSOC);
@@ -228,8 +228,10 @@ $rowsFilter   = $resultFilter->fetch_all(MYSQLI_ASSOC);
                             <th>Name</th>
                             <th>Year</th>
                             <th>Month</th>
+                            <th>Basic Salary</th>
                             <th>Bonus</th>
                             <th>Due</th>
+                            <th>Total</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -238,8 +240,10 @@ $rowsFilter   = $resultFilter->fetch_all(MYSQLI_ASSOC);
                             <td><?php echo $filter['fname'] . " " . $filter['lname']; ?></td>
                             <td><?php echo $filter['year']; ?></td>
                             <td><?php echo $filter['month']; ?></td>
+                            <td><?php echo $filter['basicSalary']; ?></td>
                             <td><?php echo $filter['bonus']; ?></td>
                             <td><?php echo $filter['due']; ?></td>
+                            <td><?php echo $filter['amount']; ?></td>
 
                         </tr>
                         <?php endforeach;?>

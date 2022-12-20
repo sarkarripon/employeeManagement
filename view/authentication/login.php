@@ -2,11 +2,9 @@
 
 <html lang="en">
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Log in</title>
-
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -52,27 +50,28 @@
                     <span style="color:red"><?php echo $_SESSION['loginFaild_msg']; ?><br></span>
                 <?php endif; ?>
                 <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
-                            <label for="remember">
-                                Remember Me
-                            </label>
-                        </div>
-                    </div>
+<!--                    <div class="col-8">-->
+<!--                        <div class="icheck-primary">-->
+<!--                            <input type="checkbox" id="remember">-->
+<!--                            <label for="remember">-->
+<!--                                Remember Me-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <!-- /.col -->
                     <div class="col-4">
+                        <input type="hidden" name="page_source" value="login_page">
                         <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                     </div>
                     <!-- /.col -->
                 </div>
             </form>
-            <p class="mb-1">
-                <a href="forgot-password.html">I forgot my password</a>
-            </p>
-            <p class="mb-0">
-                <a href="register.html" class="text-center">Register a new membership</a>
-            </p>
+<!--            <p class="mb-1">-->
+<!--                <a href="forgot-password.html">I forgot my password</a>-->
+<!--            </p>-->
+<!--            <p class="mb-0">-->
+<!--                <a href="register.html" class="text-center">Register a new membership</a>-->
+<!--            </p>-->
         </div>
         <!-- /.login-card-body -->
     </div>

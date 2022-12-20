@@ -41,6 +41,15 @@ class SalaryController extends DatabaseConnection
         $sql    = "SELECT ems_salary.*,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid WHERE emid=$id";
         $result = $this->conn->query($sql);
         $rows   = $result->fetch_all(MYSQLI_ASSOC);
+        if (empty($rows)){
+            $sql = "SELECT basicSalary FROM ems_users WHERE id=$id";
+        }else{
+            $sql    = "SELECT ems_salary.*,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid WHERE emid=$id";
+        }
+
+        $result = $this->conn->query($sql);
+        $rows   = $result->fetch_all(MYSQLI_ASSOC);
+
         foreach ($rows as $row) {
             if ($row['month'] == $month && $row['year'] == $year) {
                 header('Location: ' . $this->base_url . 'index.php?page=salary-add');
@@ -69,6 +78,7 @@ class SalaryController extends DatabaseConnection
         $id     = $data['emid'];
         $month  = $data['month'];
         $year   = $data['year'];
+        $salary = $data['amount'];
         $sql    = "SELECT ems_salary.*,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid WHERE emid=$id";
         $result = $this->conn->query($sql);
         $rows   = $result->fetch_all(MYSQLI_ASSOC);
@@ -78,8 +88,13 @@ class SalaryController extends DatabaseConnection
                 $_SESSION['error_message']['dataExist'] = "Already exist";
                 exit();
             }
-            $data['due'] = $row['basicSalary'] - $data['amount'];
+            if ($salary > $row['basicSalary']) {
+                header('Location: ' . $this->base_url . 'index.php?page=salary-add');
+                $_SESSION['error_message']['amountErr'] = "Amount more than basic should be added to bonus field";
+                exit();
+            }
         }
+        $data['due'] = $row['basicSalary'] - $data['amount'];
         $data['amount'] += (int)$data['bonus'];
         unset($data['partial']);
         $this->InsertToDatabase($data);
