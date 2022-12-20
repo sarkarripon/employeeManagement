@@ -36,7 +36,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user-circle"></i>
                         <p>
-                            Employee manage
+                            Manage Employee
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -48,7 +48,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="index.php?page=salary-list" class="nav-link">
+                            <a href="index.php?page=employee-list" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
@@ -58,7 +58,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-dollar-sign"></i>
                         <p>
-                            Salary Manage
+                            Manage Salary
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -76,9 +76,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="index.php?page=salary-statement" class="nav-link">
+                            <a href="index.php?page=statement" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Single Statement</p>
+                                <p>Statement</p>
                             </a>
                         </li>
                     </ul>

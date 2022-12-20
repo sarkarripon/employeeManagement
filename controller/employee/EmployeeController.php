@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("../../include/database/DatabaseConnection.php");
+require_once("../../includes/database/DatabaseConnection.php");
 
 class EmployeeController extends DatabaseConnection
 {
@@ -24,7 +24,7 @@ class EmployeeController extends DatabaseConnection
     public function FinalActionAfterInsertToDatabase($data)
     {
         if (!empty($data)) {
-            header('Location: ' . $this->base_url . 'index?page=employee-add');
+            header('Location: ' . $this->base_url . 'index.php?page=employee-add');
             $_SESSION['success_msg'] = "Record Successful";
             exit();
         }
@@ -38,71 +38,6 @@ class EmployeeController extends DatabaseConnection
         return $rows; // returning the formatted result
     }
 
-    public function EmployeeReadFromDatabaseSingle()
-    {
-//        $sql    = "SELECT * FROM $this->table_employinfo where id = 1";
-//        $result = $this->conn->query($sql);
-//        $row   = mysqli_fetch_assoc($result);
-//        return $row;
-    }
-
-    public function DatabaseUpdate($data)
-    {
-//        $sql_values = '';
-//        $sep        = '';
-//        foreach ($updateData as $key => $val) {
-//            $sql_values .= $sep . '' . $key .' = ';
-//            $sql_values .=  "'".$this->conn->real_escape_string($val)."'";
-//            $sep        = ', ';
-//        }
-//        $sql = "update $this->table set $sql_values where id = " . $this->conn->real_escape_string($id);
-//
-//        if ($this->conn->query($sql) === TRUE) {
-//            return true;
-//        } else {
-//            echo "Error: " . $sql . "<br>" . $this->conn->error;
-//        }
-    }
-
-    public function FinalActionAfterDatabaseUpdate($Data)
-    {
-//        if (!empty($updateData)) {
-//            $result = $this->validateData($updateData);
-//            if ($result) {
-//                unset($updateData['update_data']);
-//                $inserted = $this->dbUpdateQuery($updateData);
-//                if ($inserted) {
-//                    header("location: index.php");
-//                    $_SESSION['updateSuccess_msg'] = "Updated Successfully";
-//                    exit();
-//                }
-//            }
-//        }
-    }
-
-    public function DeleteFromDatabase($data)
-    {
-//        $id     = $deleteid;
-//        $sql    = "DELETE from $this->table where id = $id";
-//        $result = mysqli_query($this->conn, $sql);
-//        if ($result) {
-//            return true;
-//        } else {
-//            echo "Error: " . $sql . "<br>" . $this->conn->error;
-//        }
-    }
-
-    public function FinalActionAfterDeleteFromDatabase($data)
-    {
-//        if (isset($deleteid)) {
-//            $result = $this->dbDeleteQuery($deleteid);
-//            if ($result) {
-//                header("location: index.php");
-//                $_SESSION['delSuccess_msg'] = "Deleted Successfully";
-//                exit();
-//            }
-//        }
-    }
 
     public function ValidateUserInput($data)
     {
@@ -160,9 +95,15 @@ class EmployeeController extends DatabaseConnection
         } else {
             unset($_SESSION['error_message']['teamErr']);
         }
+        if (isset($data['basicSalary']) && empty($data['basicSalary'])) {
+            $_SESSION['error_message']['basicSalaryErr'] = "Basic Salary is required";
+
+        } else {
+            unset($_SESSION['error_message']['basicSalaryErr']);
+        }
 
         if (count($_SESSION['error_message']) > 0) {
-            header('Location: ' . $this->base_url . 'index?page=employee-add');
+            header('Location: ' . $this->base_url . 'index.php?page=employee-add');
         } else {
             unset($_SESSION['error_message']);
             $this->InsertToDatabase($data);
@@ -174,16 +115,3 @@ $objEmployeeController = new EmployeeController();
 
 $data = $_POST;
 $objEmployeeController->ValidateUserInput($data);
-
-
-
-
-
-
-
-
-
-
-
-
-

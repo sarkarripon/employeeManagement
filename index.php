@@ -35,6 +35,15 @@
 if($page_name == 'employee-add' ){
     include_once "view/employee/add.php";
 }
+if($page_name == 'employee-list' ){
+    include_once "view/employee/list.php";
+}
+if($page_name == 'single-statement' ){
+    include_once "view/salary/statement.php";
+}
+if($page_name == 'statement' ){
+    include_once "view/salary/statementFilter.php";
+}
 if ($page_name != 'login'){
     include_once ('view/includes/footer.php'); //including footer
 }

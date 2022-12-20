@@ -1,3 +1,12 @@
+<?php
+include "includes/database/DatabaseConnection.php";
+$database = new DatabaseConnection();
+$sql = "SELECT * FROM ems_users WHERE role='member'";
+$result = $database->conn->query($sql);
+$rows   = $result->fetch_all(MYSQLI_ASSOC);
+//echo "<pre>"; print_r($rows);exit();
+?>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -35,15 +44,10 @@
                                     <label for="emid">Employee</label>
                                     <select id="month" class="form-control" name="emid">
                                         <option value="" selected readonly>Select employee</option>
-                                        <option value="111" >Nadim Bhai</option>
-                                        <option value="222" >Mahdi Bhai</option>
-                                        <option value="333" >Noman Bhai</option>
-                                        <option value="444" >Hadi Bhai</option>
-                                        <option value="555" >Ibrahim Bhai</option>
-                                        <option value="666" >Farhan Bhai</option>
-                                        <option value="777" >Khoyer Bhai</option>
-                                        <option value="888" >Nayan Bhai</option>
-                                        <option value="999" >Tahmid Bhai</option>
+                                        <?php foreach ($rows as $row):?>
+                                        <option value="<?php echo $row['id'];?>" ><?php echo $row['fname']." ". $row['lname'];?></option>
+                                        <?php endforeach;?>
+
                                     </select>
                                 </div>
                                 <?php if (isset($_SESSION['error_message']['emErr'])): ?>
@@ -52,7 +56,6 @@
                                 <div class="form-group">
                                     <label for="partial">Want to pay partial?</label>
                                     <input type="radio" class="" name="partial" value="yes"> Yes
-                                   <input type="radio" class="" name="partial" value="no"> No
                                 </div>
                                 <div class="form-group">
                                     <label for="amount">Amount</label>

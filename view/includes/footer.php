@@ -27,11 +27,18 @@
 <!-- Bootstrap 4 -->
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+<script src="assets/plugins/select2/js/select2.full.min.js"></script>
+
 <script src="assets/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+
 <!-- AdminLTE App -->
 <script src="assets/dist/js/adminlte.js"></script>
+
+<script>
+    $(function () {
+      $('.select2').select2();
+    });
+</script>
 
 </body>
 </html>

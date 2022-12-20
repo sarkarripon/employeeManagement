@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
     <link rel="stylesheet" href="assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="assets/plugins/jqvmap/jqvmap.min.css">
+
+    <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
     <!-- Theme style -->
     <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
     <!-- Daterange picker -->
@@ -41,7 +41,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
+                <a href="index.php?page=dashboard" class="nav-link">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="index.php?page=login" class="nav-link">Login</a>

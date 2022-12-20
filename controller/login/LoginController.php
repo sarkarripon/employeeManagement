@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("../../include/database/DatabaseConnection.php"); // include database connection
+require_once("../../includes/database/DatabaseConnection.php"); // include database connection
 
 class LoginController extends DatabaseConnection
 {
@@ -21,11 +21,11 @@ class LoginController extends DatabaseConnection
             if ($result) {
                 $authenticate = $this->authenticateLogin($data); // when data stored successfully then it returns true
                 if (!empty($authenticate)) { //when store is true then redirect to index page
-                    header('Location:' .  $this->base_url.'index?page=dashboard');
+                    header('Location:' .  $this->base_url.'index.php?page=dashboard');
 
                 } else {
                     $_SESSION['loginFaild_msg'] = "input did not match";
-                    header('Location: ' . $this->base_url . 'index?page=login');
+                    header('Location: ' . $this->base_url . 'index.php?page=login');
 
                 }
             }
@@ -48,7 +48,7 @@ class LoginController extends DatabaseConnection
         }
 
         if (count($_SESSION['error_message']) > 0) {
-            header('Location: ' . $this->base_url . 'index?page=login');
+            header('Location: ' . $this->base_url . 'index.php?page=login');
 
         } else {
             return true;
@@ -59,5 +59,4 @@ class LoginController extends DatabaseConnection
 $Salary = new LoginController();
 unset($_SESSION['loginFaild_msg']);
 $Salary->getLoginData($_POST);
-
 
