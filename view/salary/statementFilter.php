@@ -94,7 +94,7 @@ if(isset($_POST['has_filters'])) {
 }
 //all filter query
 $sqlFilter = "SELECT ems_salary.*,ems_users.fname,ems_users.lname,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid $where $emidQuery $yearQuery $monthQuery $dueQuery $bonusQuery";
-echo "<p style='text-align:center'>".$sqlFilter."</p>";
+//echo "<p style='text-align:center'>".$sqlFilter."</p>";
 $resultFilter = $database->conn->query($sqlFilter);
 $rowsFilter   = $resultFilter->fetch_all(MYSQLI_ASSOC);
 

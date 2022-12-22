@@ -4,6 +4,7 @@ $database = new DatabaseConnection();
 $sql = "SELECT * FROM ems_users WHERE role='member'";
 $result = $database->conn->query($sql);
 $rows   = $result->fetch_all(MYSQLI_ASSOC);
+
 //echo "<pre>"; print_r($rows);exit();
 ?>
 
@@ -102,7 +103,6 @@ $rows   = $result->fetch_all(MYSQLI_ASSOC);
                                 </div>
 
                             </div>
-                            <!-- /.card-body -->
 
                             <div class="card-footer ">
                                 <button type="submit" class="btn btn-primary">Submit</button>

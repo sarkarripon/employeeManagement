@@ -5,7 +5,6 @@
     header('Location: index.php?page=dashboard');
   }
 ?>
-
    <?php
   $page_name = isset($_GET['page'])? $_GET['page']: '';
 
@@ -50,7 +49,6 @@ if ($page_name == 'dashboard') {
         include_once ('view/includes/footer.php'); //including footer
     }
 
-  
 ?>
     
     

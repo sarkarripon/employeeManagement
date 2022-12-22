@@ -14,7 +14,20 @@ class SalaryController extends DatabaseConnection
         $escaped_values = array_map(array($this->conn, 'real_escape_string'), array_values($data));
         $values         = implode("', '", $escaped_values);
         $sql            = "INSERT INTO $this->table_salaryinfo ($columns) VALUES ('$values')";
+
         if ($this->conn->query($sql) === TRUE) {
+
+            $id       = $data['emid'];
+            $database = new DatabaseConnection();
+            $sql      = "SELECT email,fname,lname FROM ems_users WHERE id=$id";
+            $result   = $database->conn->query($sql);
+            $row      = mysqli_fetch_assoc($result);
+
+            $data = [
+                'name' => $row['fname'] . " " . $row['lname'],
+                'email' => $row['email']
+            ];
+
             $this->FinalActionAfterInsertToDatabase($data);
         } else {
             return false;
@@ -23,28 +36,27 @@ class SalaryController extends DatabaseConnection
 
     }
 
-    public function FinalActionAfterInsertToDatabase($data)
+    public function sendMailAfterInsertToDatabase($data)
     {
+
         if (!empty($data)) {
-            header('Location: ' . $this->base_url . 'index.php?page=salary-add');
-            $_SESSION['success_msg'] = "Record Successful";
-            exit();
+            $this->sendEmail($data);
         }
     }
 
     public function SalaryReadFromDatabase($data)
     {
-        $id = $data['emid'];
-        $month = $data['month'];
-        $year = $data['year'];
+        $id     = $data['emid'];
+        $month  = $data['month'];
+        $year   = $data['year'];
         $salary = $data['amount'];
         $sql    = "SELECT ems_salary.*,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid WHERE emid=$id";
         $result = $this->conn->query($sql);
         $rows   = $result->fetch_all(MYSQLI_ASSOC);
-        if (empty($rows)){
+        if (empty($rows)) {
             $sql = "SELECT basicSalary FROM ems_users WHERE id=$id";
-        }else{
-            $sql    = "SELECT ems_salary.*,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid WHERE emid=$id";
+        } else {
+            $sql = "SELECT ems_salary.*,ems_users.basicSalary FROM ems_salary LEFT JOIN ems_users ON ems_users.id=ems_salary.emid WHERE emid=$id";
         }
 
         $result = $this->conn->query($sql);
@@ -56,12 +68,12 @@ class SalaryController extends DatabaseConnection
                 $_SESSION['error_message']['dataExist'] = "Already exist";
                 exit();
             }
-            if ($salary < $row['basicSalary']){
+            if ($salary < $row['basicSalary']) {
                 header('Location: ' . $this->base_url . 'index.php?page=salary-add');
-                $_SESSION['error_message']['amountErr'] = "Select YES to pay less than basic ".$row['basicSalary']."/=";
+                $_SESSION['error_message']['amountErr'] = "Select YES to pay less than basic " . $row['basicSalary'] . "/=";
                 exit();
             }
-            if ($salary > $row['basicSalary']){
+            if ($salary > $row['basicSalary']) {
                 header('Location: ' . $this->base_url . 'index.php?page=salary-add');
                 $_SESSION['error_message']['amountErr'] = "Please add extra amount to the bonus section";
                 exit();
@@ -94,7 +106,7 @@ class SalaryController extends DatabaseConnection
                 exit();
             }
         }
-        $data['due'] = $row['basicSalary'] - $data['amount'];
+        $data['due']    = $row['basicSalary'] - $data['amount'];
         $data['amount'] += (int)$data['bonus'];
         unset($data['partial']);
         $this->InsertToDatabase($data);
@@ -167,6 +179,24 @@ class SalaryController extends DatabaseConnection
 //        }
     }
 
+    public function sendEmail($data)
+    {
+        include('PHPMailer/mailconfig.php');
+        require "PHPMailer/mailconfig.php";
+        $mail->addAddress($data['email'], $data['name']);
+        $mail->isHTML(true);
+        $mail->Subject = 'AuthLab salary';
+        $mail->Body    = 'This is dummy mail which is sent from PHP Mailer';
+
+        if ($mail->send()) {
+            $_SESSION['success_msg'] = "Record added successfully and email wos sent to the recipient";
+        } else {
+            echo "Mailer Error: ";
+        }
+        header('Location: ' . $this->base_url . 'index.php?page=salary-add');
+        exit();
+    }
+
     public function ValidateUserInput($data)
     {
         $_SESSION['error_message'] = [];
@@ -197,10 +227,10 @@ class SalaryController extends DatabaseConnection
         if (count($_SESSION['error_message']) > 0) {
             header('Location: ' . $this->base_url . 'index.php?page=salary-add');
         }
-        if(isset($data['partial']) && $data['partial'] == 'yes'){
+        if (isset($data['partial']) && $data['partial'] == 'yes') {
             $this->SalaryReadFromDatabaseFurther($data);
 
-        }else{
+        } else {
             $this->SalaryReadFromDatabase($data);
         }
 
@@ -212,6 +242,8 @@ $dbConncetion = new SalaryController();
 $data = $_POST;
 //var_dump($data);exit();
 $dbConncetion->ValidateUserInput($data);
+
+
 
 
 
